@@ -1,29 +1,20 @@
 #include <iostream>
 using namespace std;
 
-string calificarEdad(int edad) {
-    string calificacion;
-
-    if (edad < 0) {
-        calificacion = "Edad inválida";
-    } else if (edad < 18) {
-        calificacion = "Menor de edad";
-    } else if (edad < 65) {
-        calificacion = "Adulto";
-    } else {
-        calificacion = "Adulto mayor";
-    }
-
-    return calificacion;
+double calcularBeneficio(double ingresos, double gastos) {
+    double beneficio = ingresos - gastos;
+    return beneficio;
 }
 
 int main() {
-    int edad;
-    cout << "Ingrese la edad: ";
-    cin >> edad;
+    double ingresos, gastos;
+    cout << "Ingrese el monto de ingresos: $";
+    cin >> ingresos;
+    cout << "Ingrese el monto de gastos: $";
+    cin >> gastos;
 
-    string resultado = calificarEdad(edad);
-    cout << "La calificación de la edad es: " << resultado << endl;
+    double beneficio = calcularBeneficio(ingresos, gastos);
+    cout << "El beneficio de la empresa es: $" << beneficio << endl;
 
     return 0;
 }
