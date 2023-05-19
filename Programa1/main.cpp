@@ -30,6 +30,14 @@ struct Date
     int year;
 };
 
+
+/*
+
+El asterisco (*) se utiliza en C++ para declarar un puntero. 
+En el caso de *newP, se está declarando un puntero llamado newP de tipo Passenger.
+
+*/
+
 struct Passenger
 {
     char rut[8];
@@ -76,34 +84,63 @@ void AddPassenger(char rut[], char name[], char phone[], int status, Passenger *
     }
 };
 
-// method for add Flight
-void AddFlight(int flight_id, char origin[], char destin[], char matPlane[], char nomPilot[], Hour hourFlight, Date dateFlight, int status, Flight *PTRFLIGHT, Passenger pasFlight)
+// method for adding a flight
+void AddFlight(int flight_id, const char origin[], const char destin[], const char matPlane[], const char nomPilot[], Hour hourFlight, Date dateFlight, int status, Flight *&PTRFLIGHT, Passenger *pasFlight)
 {
-
     Flight *newF = new Flight();
+    newF->Flight_id = flight_id;
+    strcpy(newF->Origin, origin);
+    strcpy(newF->Destination, destin);
+    strcpy(newF->MatPlane, matPlane);
+    strcpy(newF->NomPilot, nomPilot);
+    newF->HourFlight = hourFlight;
+    newF->DateFlight = dateFlight;
+    newF->Status = status;
+    newF->PassengerFlight = pasFlight;
 
-    newF->Flight_id, flight_id;
-    strcpy(newF-> Origin, origin);
-    strcpy(newF-> Destination, destin);
-    strcpy(newF-> MatPlane, matPlane);
-    strcpy(newF-> NomPilot, nomPilot);
-    newF-> HourFlight, hourFlight;
-    newF->DateFlight, dateFlight;
-    newF -> Status, status;
-    newF-> PassengerFlight, pasFlight;
-    
-    if (PTRFLIGHT == NULL)
+    if (PTRFLIGHT == nullptr)
     {
         PTRFLIGHT = newF;
-        newF->NextFlight = NULL;
+        newF->NextFlight = nullptr;
     }
     else
     {
         newF->NextFlight = PTRFLIGHT;
         PTRFLIGHT = newF;
     }
-};
+    
+    std::cout << "Flight added: Flight ID - " << newF->Flight_id << ", Origin - " << newF->Origin << ", Destination - " << newF->Destination << std::endl;
+}
 
-int main(){
+// method for freeing memory
+void FreeMemory(Flight *PTRFLIGHT)
+{
+    while (PTRFLIGHT != nullptr)
+    {
+        Flight *temp = PTRFLIGHT;
+        PTRFLIGHT = PTRFLIGHT->NextFlight;
+        std::cout << "Freeing memory: Flight ID - " << temp->Flight_id << std::endl;
+        delete temp;
+    }
+}
 
-};
+
+int main()
+{
+    // Usage example
+    Passenger *passengerList = nullptr;
+    Flight *flightList = nullptr;
+
+    AddPassenger("12345678", "John Doe", "12345678", 1, passengerList);
+    AddPassenger("87654321", "Jane Smith", "98765432", 2, passengerList);
+
+    Hour departureTime{10, 30, 0};
+    Date departureDate{2023, 5, 20};
+
+    AddFlight(1, "Origin", "Destination", "ABCD", "John Smith", departureTime, departureDate, 1, flightList, passengerList);
+    
+    // Freeing memory
+    FreeMemory(flightList);
+
+    return 0;
+}
