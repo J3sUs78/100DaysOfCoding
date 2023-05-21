@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 
+using namespace std;
 
 /*
 This code defines several structures: HOUR, DATE, PASSENGER, and FLIGHT, which represent different 
@@ -84,6 +85,9 @@ void AddPassenger(char rut[], char name[], char phone[], int status, Passenger *
     }
 };
 
+//variable global, mala practica pero para el ejemplo esta bien
+Flight *PTRFLIGHT = NULL;
+
 // method for adding a flight
 void AddFlight(int flight_id, const char origin[], const char destin[], const char matPlane[], const char nomPilot[], Hour hourFlight, Date dateFlight, int status, Flight *&PTRFLIGHT, Passenger *pasFlight)
 {
@@ -109,7 +113,7 @@ void AddFlight(int flight_id, const char origin[], const char destin[], const ch
         PTRFLIGHT = newF;
     }
     
-    std::cout << "Flight added: Flight ID - " << newF->Flight_id << ", Origin - " << newF->Origin << ", Destination - " << newF->Destination << std::endl;
+    cout<< "Flight added: Flight ID - " << newF->Flight_id << ", Origin - " << newF->Origin << ", Destination - " << newF->Destination << std::endl;
 }
 
 // method for freeing memory
@@ -119,8 +123,33 @@ void FreeMemory(Flight *PTRFLIGHT)
     {
         Flight *temp = PTRFLIGHT;
         PTRFLIGHT = PTRFLIGHT->NextFlight;
-        std::cout << "Freeing memory: Flight ID - " << temp->Flight_id << std::endl;
+        cout<< "Freeing memory: Flight ID - " << temp->Flight_id << std::endl;
         delete temp;
+    }
+}
+
+
+void seeflightsDone(char rut_p[8]){
+    Flight *p = PTRFLIGHT;
+    while(p -> NextFlight != NULL){
+        if(p->Status == 1){
+            Passenger *k = p->PassengerFlight;
+            while(k -> NextPassenger != NULL){
+
+                if(strcmp(k-> rut, rut_p) == 0){ //si son iguales pasajero encontrado
+                    cout<<"Origen: "<<p->Origin<<endl;
+                    cout<<"Destino: "<<p->Destination<<endl;
+                    cout<<"Dia de Vuelo: "<<p->DateFlight.day<<endl;
+                    cout<<"Mes vuelo: "<<p->DateFlight.month<<endl;
+                    cout<<"Anio Vuelo: "<<p->DateFlight.year<<endl;
+                    cout << "Hora Vuelo: " << p->HourFlight.hour << ":" << p->HourFlight.minutes << ":" << p->HourFlight.seconds << endl;
+                    cout<<"Matricula: "<<p->MatPlane<<endl;
+                    cout<<"Nombre Piloto: "<<p->NomPilot<<endl;
+                    cout<<"Numero de vuelo: "<<p->Flight_id <<endl;
+                }
+                k = k -> NextPassenger;
+            }
+        }
     }
 }
 
